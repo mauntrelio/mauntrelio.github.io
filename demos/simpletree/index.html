@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>Simple tree example</title>
+	
+	<style>
+		div.spacer {
+			margin-bottom: 20px;
+		}
+	</style>
+
+
+	<script src="//code.jquery.com/jquery-2.2.4.min.js"></script>
+
+	<link rel="stylesheet" href="//raw.githubusercontent.com/mauntrelio/simpletree/master/dist/css/simpletree.css">
+	<script src="//raw.githubusercontent.com/mauntrelio/simpletree/master/dist/js/simpletree.jquery.js"></script>
+
+	<script>
+
+	$(function(){
+	
+		$('#maketree_one').on('click',function(){
+			$('#firstTree').simpletree();
+		});	
+
+	});
+
+	</script>
+
+</head>
+
+<body>
+
+<div class="spacer">
+	<button id="maketree_one">Make a Tree</button>
+</div>
+
+	<ul id="firstTree" class="tree">
+		<li>Element 1</li>
+		<li><a href="#">Element 2</a>
+				<ul>
+					<li><a href="#">Sub-element 2.1</a></li>
+					<li>Sub-element 2.2</li>
+					<li>Sub-element 2.3
+						<ul>
+							<li><a href="#">Sub-sub-element 2.3.1</a></li>
+							<li>Sub-sub-element 2.3.2</li>
+							<li>Sub-sub-element 2.3.3</li>
+							<li><a href="#">Sub-sub-element 2.3.4</a>
+									<ul>
+										<li>Sub-sub-sub-element 2.3.4.1</li>
+										<li>Sub-sub-sub-element 2.3.4.2</li>
+										<li>Sub-sub-sub-element 2.3.4.3</li>
+									</ul>
+							</li>
+							<li>Sub-sub-element 2.3.5</li>
+						</ul>
+					</li>
+					<li>Sub-element 2.4</li>
+				</ul>
+		</li>
+		<li>Element 3</li>
+		<li>Element 4
+				<ul>
+					<li>Sub-element 4.1</li>
+					<li><a href="#">Sub-element 4.2</a>
+						<ul>
+							<li><a href="#">Sub-sub-element 4.2.1</a></li>
+							<li><a href="#">Sub-sub-element 4.2.2</a></li>
+						</ul>	
+					</li>
+					<li><a href="#">Sub-element 4.3</a>
+						<ul>
+							<li><a href="#">Sub-sub-element 4.3.1</a></li>
+							<li><a href="#">Sub-sub-element 4.3.2</a>
+									<ul>
+										<li><a href="#">Sub-sub-sub-element 4.3.2.1</a></li>
+										<li>Sub-sub-sub-element 4.3.2.2</li>
+										<li>Sub-sub-sub-element 4.3.2.3</li>
+									</ul>
+							</li>
+							<li><a href="#">Sub-sub-element 4.3.3</a></li>
+							<li><a href="#">Sub-sub-element 4.3.4</a></li>
+							<li><a href="#">Sub-sub-element 4.3.5</a>
+									<ul>
+										<li>Sub-sub-sub-element 4.3.5.1</li>
+										<li><a href="#">Sub-sub-sub-element 4.3.5.2</a></li>
+										<li>Sub-sub-sub-element 4.3.5.3</li>
+									</ul>
+							</li>
+							<li><a href="#">Sub-sub-element 4.3.6</a></li>
+						</ul>
+					</li>
+				</ul>
+			</li>
+		<li>Element 5</li>
+		<li>Element 6</li>
+
+</ul>	
+	
+</body>
+
+</html>
