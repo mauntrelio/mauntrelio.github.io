@@ -88,16 +88,46 @@ Adapted as a jQuery plugin by Maurizio Manetti
     $element.find('a').on('mousedown',handleClick); 
   };
 
+  SimpleTree.prototype.expand = function(){
+    var settings = this.settings;
+    this.element.find('li.' + settings.classCollapsed).removeClass(settings.classCollapsed).addClass(settings.classOpen);
+  };
+  
+  SimpleTree.prototype.collapse = function(){
+    var settings = this.settings;
+    this.element.find('li.' + settings.classOpen).removeClass(settings.classOpen).addClass(settings.classCollapsed);
+  };
+  
+  SimpleTree.prototype.destroy = function(){};
+
+  // evaluate method call or creation (similar to jQuery UI widget factory)
   // prevent against multiple instantiations
   // attach the plugin in the data-attribute of matched elements
   $.fn[pluginName] = function ( options ) {
-    return this.each(function () {
-      if (!$.data(this, 'plugin_' + pluginName)) {
-        $.data(this, 'plugin_' + pluginName, 
-        new SimpleTree( this, options ));
-      }
-  });
-  }  
+    var isMethodCall = typeof options === "string";
+    if ( isMethodCall ) {
+      return this.each( function() {
+        var instance = $.data(this, 'plugin_' + pluginName);
+        if (!instance) {
+          // error: instance not initialized
+          console.error("Cannot call methods on " + pluginName + " prior to initialization; attempted to call method '" + options + "'" );
+        } else if ( !$.isFunction(instance[options]) ) {
+          // error: method not defined
+          console.error("No such method '" + options + "' for " + pluginName);
+        } else {
+          // finally call the desired method
+          instance[options].call(instance);
+        }
+      });
+    } else {
+      return this.each(function () {
+        if (!$.data(this, 'plugin_' + pluginName)) {
+          $.data(this, 'plugin_' + pluginName, 
+          new SimpleTree( this, options ));
+        }
+      });
+    }
+  };
  
 }( jQuery, window, document ));
 

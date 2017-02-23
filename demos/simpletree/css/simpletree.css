@@ -38,6 +38,11 @@ Adapted as a jQuery plugin by Maurizio Manetti
     text-decoration: underline;
 }
 
+.st-treed .st-last {
+    background-image: url('../img/corner.gif');
+    background-position: 8px 0;
+}
+
 .st-treed .st-collapsed, .st-treed .st-open {
     background-repeat: no-repeat;
     background-position: 4px 0;
@@ -54,11 +59,6 @@ Adapted as a jQuery plugin by Maurizio Manetti
 
 .st-treed .st-collapsed ul {
     display: none;
-}
-
-.st-treed .st-last {
-    background-image: url('../img/corner.gif');
-    background-position: 8px 0;
 }
 
 .st-treed .st-file a {

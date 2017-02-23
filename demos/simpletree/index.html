@@ -3,6 +3,10 @@
 <head>
 	<meta charset="utf-8">
 	<title>jquery-simpletree usage example</title>
+        <script src="//code.jquery.com/jquery-1.12.4.min.js"></script>
+        <link rel="stylesheet" href="css/simpletree.css">
+        <script src="js/simpletree.jquery.js"></script>
+
 	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato">
 
 	<style>
@@ -16,14 +20,12 @@
 		}
 	</style>
 
-
-        <script src="//code.jquery.com/jquery-1.12.4.min.js"></script>
-        <link rel="stylesheet" href="css/simpletree.css">
-        <script src="js/simpletree.jquery.js"></script>
 	<script>
 
 	$(function(){
 	
+		$('#zeroTree').simpletree();
+
 		$('#maketree_one').on('click',function(){
 			$('#firstTree').simpletree();
 		});	
@@ -31,6 +33,18 @@
 		$('#maketree_two').on('click',function(){
 			$('#secondTree').simpletree({startCollapsed: false});
 		});	
+
+		$('#maketree_tree').on('click',function(){
+			$('.mytree').simpletree({startCollapsed: false});
+		});	
+
+		$('#maketree_two_collapse').on('click',function() {
+			$('#secondTree').simpletree('collapse');
+		});
+
+		$('#maketree_two_expand').on('click',function() {
+			$('#secondTree').simpletree('expand');
+		});
 
 	});
 
@@ -43,16 +57,46 @@
 	<h1>Examples:</h1>
 
 	<div class="spacer">
-		<button id="maketree_one">Make a Tree with first list (start collapsed)</button>
+	<ul id="zeroTree">
+			<li><a href="#"><b>ZERO LIST (set on document ready)</b></a>
+				<ul>
+					<li><a href="#">Sub-element 1</a></li>
+					<li>Sub-element 2</li>
+					<li>Sub-element 3
+						<ul>
+							<li><a href="#">Sub-sub-element 3.1</a></li>
+							<li>Sub-sub-element 3.2</li>
+							<li>Sub-sub-element 3.3</li>
+							<li><a href="#">Sub-sub-element 3.4</a>
+									<ul>
+										<li>Sub-sub-sub-element 3.4.1</li>
+										<li>Sub-sub-sub-element 3.4.2</li>
+										<li>Sub-sub-sub-element 3.4.3</li>
+									</ul>
+							</li>
+							<li>Sub-sub-element 3.5</li>
+						</ul>
+					</li>
+					<li>Sub-element 4</li>
+				</ul>
+		</li>			
+	</ul>
+
+	</div>
+
+	<hr>
+
+	<div class="spacer">
+		<button id="maketree_one">Make a Tree with first list (start CLOSED)</button>
 		<ul id="firstTree" class="tree">
-			<li><b>FIRST TREE</b></li>
+			<li><b>FIRST LIST</b></li>
 			<li><a href="#">Element 2</a>
 					<ul>
 						<li><a href="#">Sub-element 2.1</a></li>
 						<li>Sub-element 2.2</li>
 						<li>Sub-element 2.3
 							<ul style="background-color: #ccffcc;">
-								<li><a href="#">Sub-sub-element 2.3.1</a> - Light green bg is to test last child correct bg image</li>
+								<li><a href="#">Sub-sub-element 2.3.1</a> <em>Light green BG here to test last child correct BG image</em></li>
 								<li>Sub-sub-element 2.3.2</li>
 								<li>Sub-sub-element 2.3.3</li>
 								<li><a href="#">Sub-sub-element 2.3.4</a>
@@ -110,9 +154,11 @@
 	<hr>
 
 	<div class="spacer">
-		<button id="maketree_two">Make a Tree with second list (start uncollapsed)</button>
+		<button id="maketree_two">Make a Tree with second list (start OPEN)</button>
+		<button id="maketree_two_collapse">Collapse all</button>
+		<button id="maketree_two_expand">Expand all</button>
 		<ul id="secondTree" class="tree">
-			<li><b>SECOND TREE</b></li>
+			<li><b>SECOND LIST</b></li>
 			<li><a href="#">Element 2</a>
 					<ul>
 						<li><a href="#">Sub-element 2.1</a></li>
@@ -164,23 +210,80 @@
 											<li>Sub-sub-sub-element 4.3.5.3</li>
 										</ul>
 								</li>
-								<li><a href="#">Sub-sub-element 4.3.6</a></li>
 							</ul>
 						</li>
 					</ul>
 				</li>
-			<li>Element 6</li>
+			<li>Element 6
+				<ul>
+					<li><a href="#">Sub-element 6.1</a></li>
+				</ul>
+			</li>
+
 		</ul>	
 	</div>
 
 	<hr>
 
+	<div class="spacer">
+		<button id="maketree_tree">Make a tree on all ul list of class "mytree" (start OPEN)</button>
+		<ul class="mytree">
+			<li><b>THIRD LIST</b>
+				<ul>
+					<li><a href="#">Sub-element 1</a></li>
+					<li>Sub-element 2</li>
+					<li>Sub-element 3
+						<ul>
+							<li><a href="#">Sub-sub-element 3.1</a></li>
+							<li>Sub-sub-element 3.2</li>
+							<li>Sub-sub-element 3.3</li>
+							<li><a href="#">Sub-sub-element 3.4</a>
+									<ul>
+										<li>Sub-sub-sub-element 3.4.1</li>
+										<li>Sub-sub-sub-element 3.4.2</li>
+										<li>Sub-sub-sub-element 3.4.3</li>
+									</ul>
+							</li>
+							<li>Sub-sub-element 3.5</li>
+						</ul>
+					</li>
+					<li>Sub-element 4</li>
+				</ul>
+		</li>			
+	</ul>
+
+	<p></p>
+
+	<ul class="mytree">
+			<li><b>FOURTH LIST</b>
+				<ul>
+					<li><a href="#">Sub-element 1</a></li>
+					<li>Sub-element 2</li>
+					<li>Sub-element 3
+						<ul>
+							<li><a href="#">Sub-sub-element 3.1</a></li>
+							<li>Sub-sub-element 3.2</li>
+							<li>Sub-sub-element 3.3</li>
+							<li><a href="#">Sub-sub-element 3.4</a>
+									<ul>
+										<li>Sub-sub-sub-element 3.4.1</li>
+										<li>Sub-sub-sub-element 3.4.2</li>
+										<li>Sub-sub-sub-element 3.4.3</li>
+									</ul>
+							</li>
+							<li>Sub-sub-element 3.5</li>
+						</ul>
+					</li>
+					<li>Sub-element 4</li>
+				</ul>
+		</li>			
+	</ul>
+
+	</div>
 
 	<h2>In progress...</h2>
 
 	<ul>
-		<li><b>Make tree from class</b></li>
-		<li><b>Make tree on document ready</b></li>
 		<li><b>Collapse all</b></li>
 		<li><b>Expand all</b></li>
 		<li><b>Destroy tree</b></li>
