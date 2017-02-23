@@ -9,21 +9,36 @@ Adapted as a jQuery plugin by Maurizio Manetti
 
 */
 
-(function( $ ) {
+;(function( $, window, document, undefined ) {
  
   "use strict";
 
-  $.fn.simpletree = function( options ) {
- 
-  var settings = $.extend({
-     classChanged: 'st-treed',
-     classOpen: 'st-open',
-     classCollapsed: 'st-collapsed',
-     classLeaf: 'st-file',
-     classLast: 'st-last',
-     startCollapsed: true
-  }, options); 			
+  var pluginName = 'simpletree',
+      defaults = {
+       classChanged: 'st-treed',
+       classOpen: 'st-open',
+       classCollapsed: 'st-collapsed',
+       classLeaf: 'st-file',
+       classLast: 'st-last',
+       startCollapsed: true
+     };
 
+  // util function to get the real bg color of an element
+  var get_bgcolor = function(obj) {
+    var real = obj.css('backgroundColor');
+    var none = 'rgba(0, 0, 0, 0)';
+    // if bg color not set look for the color of first parent with a bg color set
+    if (real === none) { 
+        real = obj.parents().filter(function() {
+            return $(this).css('backgroundColor') != none
+        }).first().css('backgroundColor');
+    }
+    // if bg color yet not set fallback to white
+    if (real === undefined) {
+      real = 'rgba(255, 255, 255, 255)';
+    }
+    return real;
+  }
 
   var handleClick = function(e) {
     if (!e) var e = window.event;
@@ -31,28 +46,58 @@ Adapted as a jQuery plugin by Maurizio Manetti
     if (e.stopPropagation) e.stopPropagation();
   }
 
-  this.addClass('st-treed');
-  this.find('li').each(function(index){
-    var $li = $(this);
-    if ($li.children('ul').length > 0) {
-      $li.addClass(settings.classCollapsed);
-      $li.on('mousedown',function(event) {
-          $li.toggleClass(settings.classOpen + ' ' + settings.classCollapsed);
-          handleClick(event);
-        });
-    } else {
-      $li.addClass(settings.classLeaf);
-    }
-    if ($li.next('li').length == 0) {
-      $li.addClass(settings.classLast);
-    }
-  });
+  function SimpleTree( element, options ) {
+    this.element = $(element);
+    this.settings = $.extend( {}, defaults, options);
+    this._defaults = defaults;
+    this._name = pluginName;
+    this.init();    
+  }
 
-  this.find('a').on('mousedown',handleClick);
-       
-  return this;
-  
+  SimpleTree.prototype.init = function () {
+    var settings = this.settings;
+    var $element = this.element;
+    // init the plugin on matched elements 
+    $element.addClass(settings.classChanged);
+    // take all listed items
+    $element.find('li').each(function(index){
+      var $li = $(this);
+      // if the list item has unordered lists as children
+      if ($li.children('ul').length > 0) { 
+        if (settings.startCollapsed) { 
+          $li.addClass(settings.classCollapsed); // add class collapsed if should start collapsed (it is the default setting) 
+        } else {
+          $li.addClass(settings.classOpen); // add class open if it should start open
+        }
+        // manage click on item
+        $li.on('mousedown',function(event) { 
+            $li.toggleClass(settings.classOpen + ' ' + settings.classCollapsed); // toggle open / collapsed status
+            handleClick(event); // avoid propagation of the event to parent container(s)
+          });
+      } else {
+        $li.addClass(settings.classLeaf); // has no children: it's a leaf
+      }
+      // has no list items subsequent siblings: it is the last one
+      if ($li.next('li').length == 0) {
+        $li.addClass(settings.classLast); 
+        // set the background color explicitly so to hide the UL vertical dots
+        $li.css('backgroundColor',get_bgcolor($li)); 
+      }
+    });
+    // avoid anchor tags click to fire collapse / open of parent containers
+    $element.find('a').on('mousedown',handleClick); 
   };
+
+  // prevent against multiple instantiations
+  // attach the plugin in the data-attribute of matched elements
+  $.fn[pluginName] = function ( options ) {
+    return this.each(function () {
+      if (!$.data(this, 'plugin_' + pluginName)) {
+        $.data(this, 'plugin_' + pluginName, 
+        new SimpleTree( this, options ));
+      }
+  });
+  }  
  
-}( jQuery ));
+}( jQuery, window, document ));
 
