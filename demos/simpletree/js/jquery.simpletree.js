@@ -13,7 +13,7 @@ Adapted as a jQuery plugin by Maurizio Manetti
  
   "use strict";
 
-  var pluginName = 'simpletree',
+  var pluginName = 'simpleTree',
       defaults = {
        classChanged: 'st-treed',
        classOpen: 'st-open',
@@ -65,9 +65,17 @@ Adapted as a jQuery plugin by Maurizio Manetti
       // if the list item has unordered lists as children
       if ($li.children('ul').length > 0) { 
         if (settings.startCollapsed) { 
-          $li.addClass(settings.classCollapsed); // add class collapsed if should start collapsed (it is the default setting) 
+          // add class collapsed if should start collapsed (it is the default setting) 
+          // unless already has class open
+          if (!$li.hasClass(settings.classOpen)) {
+            $li.addClass(settings.classCollapsed);   
+          }
         } else {
-          $li.addClass(settings.classOpen); // add class open if it should start open
+          // add class open if it should start open
+          // unless it already has class collapsed
+          if (!$li.hasClass(settings.classCollapsed)) {
+            $li.addClass(settings.classOpen); 
+          }
         }
         // manage click on item
         $li.on('mousedown',function(event) { 
@@ -98,7 +106,35 @@ Adapted as a jQuery plugin by Maurizio Manetti
     this.element.find('li.' + settings.classOpen).removeClass(settings.classOpen).addClass(settings.classCollapsed);
   };
   
-  SimpleTree.prototype.destroy = function(){};
+  SimpleTree.prototype._reset = function(){
+    // remove classes and event bindings
+    // method should never be called alone
+    var settings = this.settings;
+    var $element = this.element;
+    $element.removeClass(settings.classChanged);
+    $element.find('li').each(function(index){
+      var $li = $(this);
+      if ($li.hasClass(settings.classLast)) {
+        $li.css('backgroundColor',''); 
+      }
+      $li.removeClass(settings.classLeaf)
+         .removeClass(settings.classLast)
+         .off('mousedown');
+    });
+  };
+
+  SimpleTree.prototype.destroy = function(){
+    // reset interface and event binding
+    this._reset();    
+    // remove data attributes (we are deleting the instance completely)
+    this.element.removeData('plugin_' + this._name);
+  };
+  
+  SimpleTree.prototype.repaint = function(){
+    // reset and re-apply
+    this._reset();
+    this.init();
+  };
 
   // evaluate method call or creation (similar to jQuery UI widget factory)
   // prevent against multiple instantiations

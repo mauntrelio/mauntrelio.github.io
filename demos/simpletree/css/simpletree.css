@@ -65,11 +65,6 @@ Adapted as a jQuery plugin by Maurizio Manetti
     background-image: url('../img/file.gif');
 }
 
-.st-treed a.inactive {
-    color: #555555;
-    text-decoration: line-through;
-}
-
 .st-treed a:hover {
     background-color: transparent;
 }
